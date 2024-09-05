@@ -1,39 +1,48 @@
-/*
-  BlinkRGB
+#include <Adafruit_NeoPixel.h>
+// must install above lib before using this code in Arduino IDE. 
 
-  Demonstrates usage of onboard RGB LED on some ESP dev boards.
+// Define the GPIO pin where the built-in RGB LED is connected
+#define LED_PIN GPIO_NUM_48  // Adjust this pin number to your specific board's configuration
 
-  Calling digitalWrite(RGB_BUILTIN, HIGH) will use hidden RGB driver.
+// Define the number of LEDs in the strip. For a single built-in RGB LED, this is 1.
+#define NUM_LEDS 1
 
-  RGBLedWrite demonstrates control of each channel:
-  void neopixelWrite(uint8_t pin, uint8_t red_val, uint8_t green_val, uint8_t blue_val)
-
-  WARNING: After using digitalWrite to drive RGB LED it will be impossible to drive the same pin
-    with normal HIGH/LOW level
-*/
-//#define RGB_BRIGHTNESS 64 // Change white brightness (max 255)
-
-// the setup function runs once when you press reset or power the board
+// Create an instance of the Adafruit_NeoPixel class
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 void setup() {
-  // No need to initialize the RGB LED
+  Serial.begin(115200);
+  
+  // Initialize the NeoPixel library
+  strip.begin();
+  strip.show(); // Initialize all pixels to 'off'
+  
+  Serial.println("Onboard LED blink starts");
 }
 
-// the loop function runs over and over again forever
 void loop() {
-#ifdef RGB_BUILTIN
-  digitalWrite(RGB_BUILTIN, HIGH);  // Turn the RGB LED white
-  delay(1000);
-  digitalWrite(RGB_BUILTIN, LOW);  // Turn the RGB LED off
-  delay(1000);
+  // Set the built-in RGB LED to white
+  strip.setPixelColor(0, strip.Color(64, 64, 64)); // White color
+  strip.show();
+  delay(1000); // Wait for 1 second
+  
+  // Set the built-in RGB LED to red
+  strip.setPixelColor(0, strip.Color(255, 0, 0)); // Red color
+  strip.show();
+  delay(1000); // Wait for 1 second
 
-  neopixelWrite(RGB_BUILTIN, RGB_BRIGHTNESS, 0, 0);  // Red
-  delay(1000);
-  neopixelWrite(RGB_BUILTIN, 0, RGB_BRIGHTNESS, 0);  // Green
-  delay(1000);
-  neopixelWrite(RGB_BUILTIN, 0, 0, RGB_BRIGHTNESS);  // Blue
-  delay(1000);
-  neopixelWrite(RGB_BUILTIN, 0, 0, 0);  // Off / black
-  delay(1000);
-#endif
+  // Set the built-in RGB LED to green
+  strip.setPixelColor(0, strip.Color(0, 255, 0)); // Green color
+  strip.show();
+  delay(1000); // Wait for 1 second
+
+  // Set the built-in RGB LED to blue
+  strip.setPixelColor(0, strip.Color(0, 0, 255)); // Blue color
+  strip.show();
+  delay(1000); // Wait for 1 second
+
+  // Turn off the built-in RGB LED
+  strip.setPixelColor(0, strip.Color(0, 0, 0)); // Off
+  strip.show();
+  delay(1000); // Wait for 1 second
 }
